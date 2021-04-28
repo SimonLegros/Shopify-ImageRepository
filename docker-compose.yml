@@ -1,20 +1,9 @@
 version: "3"
 services: 
-    client:
-        build: ./client
-        restart: always
-        ports:
-            - "3000:3000"
-        volumes:
-            - ./client:/client
-            - /client/node_modules
-        links:
-            - api
-        networks:
-            - shopifychallenge-network
-    
     api:
-        build: ./api
+        build:
+            context: ./api
+            dockerfile: ./Dockerfile
         restart: always
         ports:
             - "9000:9000"
@@ -23,6 +12,21 @@ services:
             - /api/node_modules
         networks: 
             - shopifychallenge-network
+
+    client:
+        build: 
+            context: ./client
+            dockerfile: ./Dockerfile
+        restart: always
+        ports:
+            - "3000:3000"
+        volumes:
+            - ./client:/client
+            - /client/node_modules
+        depends_on:
+            - api
+        links: 
+            - "api:api"
 
 networks: 
     shopifychallenge-network:

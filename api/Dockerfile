@@ -1,14 +1,14 @@
 # Light node image from github.com/mhart/alpine-node
-FROM mhart/alpine-node:12
+FROM node:12.19
 
 WORKDIR /api
 
-COPY package*.json /api/
+COPY package*.json ./
 
 RUN npm install
 
-COPY . /api/
+COPY . .
 
-EXPOSE 80
+EXPOSE 9000
 
 CMD ["npm", "start"]

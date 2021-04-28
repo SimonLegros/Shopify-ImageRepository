@@ -9,6 +9,7 @@ class App extends Component {
     }
 
     callAPI() {
+      // fetch("http://api:9000/images")
         fetch("http://localhost:9000/images")
         .then(res => res.json())
         .then(result => {

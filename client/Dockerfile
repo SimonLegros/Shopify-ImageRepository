@@ -1,13 +1,13 @@
 # Light node image from github.com/mhart/alpine-node
-FROM mhart/alpine-node:12
+FROM node:12.19
 
 WORKDIR /client
 
-COPY package*.json /client/
+COPY package*.json ./
 
 RUN npm install
 
-COPY . /client/
+COPY . .
 
 EXPOSE 3000
 
