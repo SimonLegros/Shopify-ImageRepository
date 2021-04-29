@@ -1,30 +1,30 @@
 import React, { useState } from "react";
 import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header.component';
+import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/Login.component';
+import MyImages from './components/MyImages.component';
+import './App.css';
 
 function App() {
     const [token, setToken] = useState();
-
-    if(!token) {
-      return <Login setToken={setToken} />
-    }
     return (
       <div className="App">
-        <header className="App-header">
+        <Router>
+          <Header></Header>
           <img src={logo} className="App-logo" alt="logo" />
           <p>
-            Edit <code>src/App.js</code> and save to reload.
+            SHOPIFY CHALLENGE - IMAGE REPOSITORY
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route path="/private">
+              <MyImages />
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
 }

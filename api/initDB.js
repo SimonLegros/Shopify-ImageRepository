@@ -1,3 +1,6 @@
+const fs = require('fs');
+
+const userImagesBasePath = "./image_store";
 
 let initDB = () => {
     const db = require("./models");
@@ -19,6 +22,14 @@ let initDB = () => {
             password: "$2y$10$lAXngkaTJBQvdRDw7ZNTIOZLEhU4BqsgzmhpyxYUYI.NqPuj5TJ6e"
         });
     }
+
+    if(!fs.existsSync(userImagesBasePath)){
+        fs.mkdirSync(userImagesBasePath);
+    }
+    if(!fs.existsSync(userImagesBasePath + "/shopify")){
+        fs.mkdirSync(userImagesBasePath + "/shopify");
+    }
+
 };
 
 module.exports = initDB;
