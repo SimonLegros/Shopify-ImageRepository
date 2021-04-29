@@ -10,6 +10,6 @@ router.use((req, res, next) => {
     next();
 });
 
-router.post("signin", controller.signin);
+router.post("/signin", controller.signin);
 
 module.exports = router;

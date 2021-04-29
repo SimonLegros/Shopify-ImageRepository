@@ -1,50 +1,32 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import logo from './logo.svg';
 import './App.css';
+import Login from './components/Login.component';
 
-class App extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { apiResponse: "" };
-    }
+function App() {
+    const [token, setToken] = useState();
 
-    callAPI() {
-      // fetch("http://api:9000/images")
-        fetch("http://localhost:9000/images")
-        .then(res => res.json())
-        .then(result => {
-            this.setState({apiResponse: result})
-        })
-        .catch(err => {
-            console.log(err);
-        });
+    if(!token) {
+      return <Login setToken={setToken} />
     }
-
-    componentDidMount() {
-        this.callAPI();
-    }
-
-    render() {
-        return (
-            <div className="App">
-              <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                  Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="https://reactjs.org"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Learn React
-                </a>
-              </header>
-              <p className="App-intro">Response : {this.state.apiResponse.images}</p>
-            </div>
-          );
-    }
+    return (
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <p>
+            Edit <code>src/App.js</code> and save to reload.
+          </p>
+          <a
+            className="App-link"
+            href="https://reactjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn React
+          </a>
+        </header>
+      </div>
+    );
 }
 
 export default App;

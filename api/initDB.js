@@ -2,7 +2,7 @@
 let initDB = () => {
     const db = require("./models");
     const Role = db.role;
-    const User = db.User;
+    const User = db.user;
 
     db.sequelize.sync({force: true}).then(() => {
         console.log("Sync DB");
