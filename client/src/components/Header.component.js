@@ -15,10 +15,10 @@ export default function Header() {
                 ? <div className='btnGroup'>
                     <div>
                         <p>
-                        Hello, {user.username}.
+                            Hello, {user.username}.
                         </p>
                     </div>
-                <Link to="/">
+                    <Link to="/">
                         <InlineButton name={"Public Images"} />
                     </Link>
                     <Link to="/home">
