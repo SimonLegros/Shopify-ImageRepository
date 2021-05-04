@@ -25,8 +25,8 @@ services:
             - /client/node_modules
         depends_on:
             - api
-        links: 
-            - "api:api"
+        networks:
+            - shopifychallenge-network
 
 networks: 
     shopifychallenge-network:
