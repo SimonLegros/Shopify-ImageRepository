@@ -5,7 +5,8 @@
     "author": "Simon Legros",
     "scripts": {
         "install": "npm --prefix ./api install ./api && npm --prefix ./client install ./client",
-        "dev": "docker-compose -f docker-compose.yml up -d --build",
+        "dev": "docker-compose -f docker-compose.yml up --build --force-recreate",
+        "start": "docker-compose -f docker-compose.yml up -d --build --force-recreate",
         "stop-dev": "docker-compose -f docker-compose.yml stop"
     },
     "repository": {

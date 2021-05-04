@@ -3,28 +3,27 @@ const User = db.user;
 const { promisify } = require('util');
 const AppError = require('./../utils/AppError');
 const catchAsync = require('./../utils/catchAsync');
-let multer = require('multer');
+const makeDir = require('make-dir');
 
 const Op = db.Sequelize.Op;
 
-let storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, '.')
-    },
-    filename: function(req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
+const UPLOAD_BASE_PATH = "./uploads";
+
+exports.uploadImages = (req, res, next) => {
+    if(!req.files){
+        return res.status(500).send("No File uploaded");
     }
-});
-
-let upload = multer({storage: storage}).single('file');
-
-exports.uploadImages = (req, res) => {
-    console.log(req.selectedFile);
-    upload(req, res, function(err) {
-        if (err) {
-            return res.status(500).json(err);
-        }
-        console.log(req.file);
-        return res.status(200).send(req.file);
+    let imagesFile = req.files.file;
+    let username = "bo";
+    let visibility = "public";
+    let newPath = `${UPLOAD_BASE_PATH}/${username}/${visibility}`;
+    makeDir(newPath).then(path => {
+        imagesFile.mv(`${newPath}/${imagesFile.name}`, (err) => {
+            if(err) {
+                console.log(err);
+                return res.status(500).send(err);
+            }
+            res.status(200).json({file: imagesFile});
+        });
     });
 };

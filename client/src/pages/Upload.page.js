@@ -9,9 +9,13 @@ export default function Upload() {
 
     const { handleChange, uploadImages, selectedFile } = useImages();
 
-    const handleUpload = async (e) => {
+    // const handleUpload = async (e) => {
+    //     e.preventDefault();
+    //     await uploadImages();
+    // }
+    const handleUpload = (e) => {
         e.preventDefault();
-        await uploadImages();
+        uploadImages();
     }
 
     return(

@@ -9,17 +9,25 @@ export default function useImages() {
     // Upload images 
     const uploadImages = async () => {
         console.log(selectedFile);
-        let formData = new FormData();
-        formData.append("myFile", selectedFile, selectedFile.name);
-        console.log(formData);
-        return axios.post('images/upload', {
-            formData
-        }).then(async (res) => {
-            console.log(res);
-        }).catch((err) => {
-            // setError(err.response.data);
-            console.log(err.response.data)
-        })
+        const data = new FormData();
+        data.append("file", selectedFile);
+        console.log(data);
+        // return axios.post('images/upload', {
+        //     formData
+        // }).then(async (res) => {
+        //     console.log(res);
+        // }).catch((err) => {
+        //     // setError(err.response.data);
+        //     console.log(err.response.data)
+        // })
+        fetch("http://localhost:9000/images/upload", {
+            method: "POST",
+            body: data,
+        }).then( response => {
+            response.json().then( body => {
+                console.log(body);
+            });
+        });
     };
 
     const handleChange = event => {
