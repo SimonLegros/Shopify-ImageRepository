@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../components/Header.component';
 
-export default function Home() {
+export default function Upload() {
 
     return(
         <div className="page">
             <Header/>
-            <h3 className="page__body">All your images are regrouped here!</h3>
+            <h3 className="page__body">Here you can upload your own images</h3>
         </div>
     )
 };

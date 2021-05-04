@@ -14,27 +14,30 @@ export default function Header() {
             {user
                 ? <div className='btnGroup'>
                     <div>
-                        <p>
+                        <h3>
                             Hello, {user.username}.
-                        </p>
+                        </h3>
                     </div>
                     <Link to="/">
-                        <InlineButton name={"Public Images"} />
+                        <InlineButton name={"<Public Images>"} />
                     </Link>
                     <Link to="/home">
-                        <InlineButton name={"My images"} />
+                        <InlineButton name={"<My Images>"} />
                     </Link>
-                    <InlineButton name={'logout'} handleClick={logoutUser} />
+                    <Link to="/upload">
+                        <InlineButton name={"<Upload Images>"} />
+                    </Link>
+                    <InlineButton name={'<Log Out>'} handleClick={logoutUser} />
                 </div>
                 : <div className='btnGroup'>
                     <Link to="/">
-                        <InlineButton name={"Public Images"} />
+                        <InlineButton name={"<Public Images>"} />
                     </Link>
                     <Link to="/login">
-                        <InlineButton name={"login"} />
+                        <InlineButton name={"<Log In>"} />
                     </Link>
                     <Link to="/register">
-                        <InlineButton name={"register"} />
+                        <InlineButton name={"<Register>"} />
                     </Link>
                 </div>
             }

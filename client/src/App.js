@@ -6,6 +6,7 @@ import Register from './pages/Register.page';
 import Login from './pages/Login.page';
 import Landing from './pages/Landing.page';
 import Home from './pages/Home.page';
+import Upload from './pages/Upload.page';
 import NotFound from './pages/NotFound.page';
 import useFindUser from './hooks/useFindUser.service';
 import './App.css';
@@ -26,6 +27,7 @@ function App() {
                     <Route path="/register" component={Register} />
                     <Route path="/login" component={Login} />
                     <PrivateRoute path="/home" component={Home} />
+                    <PrivateRoute path="/upload" component={Upload} />
                     <Route component={NotFound} />
                 </Switch>
             </UserContext.Provider>
