@@ -1,31 +1,38 @@
 import React, { useState } from "react";
-import logo from './logo.svg';
-import Header from './components/Header.component';
-import {BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Login from './components/Login.component';
-import MyImages from './components/MyImages.component';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { UserContext } from './hooks/UserContext.service';
+import PrivateRoute from './pages/PrivateRoute.page';
+import Register from './pages/Register.page';
+import Login from './pages/Login.page';
+import Landing from './pages/Landing.page';
+import Home from './pages/Home.page';
+import NotFound from './pages/NotFound.page';
+import useFindUser from './hooks/useFindUser.service';
 import './App.css';
 
+
 function App() {
-    const [token, setToken] = useState();
+
+    const {
+        user,
+        setUser,
+        isLoading } = useFindUser();
+
     return (
-      <div className="App">
-        <Router>
-          <Header></Header>
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            SHOPIFY CHALLENGE - IMAGE REPOSITORY
-          </p>
-          <Switch>
-            <Route path="/login">
-              <Login />
-            </Route>
-            <Route path="/private">
-              <MyImages />
-            </Route>
-          </Switch>
-        </Router>
-      </div>
+        <BrowserRouter>
+            <UserContext.Provider value={{ user, setUser, isLoading }}>
+                <p>
+                    SHOPIFY CHALLENGE - IMAGE REPOSITORY
+                </p>
+                <Switch>
+                    <Route exact path="/" component={Landing} />
+                    <Route path="/register" component={Register} />
+                    <Route path="/login" component={Login} />
+                    <PrivateRoute path="/home" component={Home} />
+                    <Route component={NotFound} />
+                </Switch>
+            </UserContext.Provider>
+        </BrowserRouter>
     );
 }
 

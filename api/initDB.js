@@ -18,6 +18,7 @@ let initDB = () => {
             name: "user"
         });
         User.create({
+            uid: 1,
             username: "shopify",
             password: "$2y$10$lAXngkaTJBQvdRDw7ZNTIOZLEhU4BqsgzmhpyxYUYI.NqPuj5TJ6e"
         });

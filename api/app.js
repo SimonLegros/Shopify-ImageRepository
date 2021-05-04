@@ -7,6 +7,7 @@ var cors = require("cors");
 
 var authRouter = require('./routes/auth.routes');
 var imagesRouter = require('./routes/images.routes');
+const errorController = require('./controllers/error.controller');
 
 var app = express();
 
@@ -35,15 +36,18 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Error handler
+app.use(errorController); 
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+// // error handler
+// app.use(function(err, req, res, next) {
+//   // set locals, only providing error in development
+//   res.locals.message = err.message;
+//   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+//   // render the error page
+//   res.status(err.status || 500);
+//   res.render('error');
+// });
 
 module.exports = app;

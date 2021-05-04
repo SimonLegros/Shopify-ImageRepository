@@ -10,6 +10,9 @@ router.use((req, res, next) => {
     next();
 });
 
-router.post("/signin", controller.signin);
+router.post("/login", controller.loginUser);
+router.post("/register", controller.registerUser);
+router.get("/logout", controller.logoutUser);
+router.get("/user", controller.checkUser);
 
 module.exports = router;
