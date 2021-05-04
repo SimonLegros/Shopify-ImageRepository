@@ -21,9 +21,6 @@ function App() {
     return (
         <BrowserRouter>
             <UserContext.Provider value={{ user, setUser, isLoading }}>
-                <p>
-                    SHOPIFY CHALLENGE - IMAGE REPOSITORY
-                </p>
                 <Switch>
                     <Route exact path="/" component={Landing} />
                     <Route path="/register" component={Register} />
