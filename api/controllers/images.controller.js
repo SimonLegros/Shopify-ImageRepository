@@ -4,7 +4,8 @@ const { promisify } = require('util');
 const AppError = require('./../utils/AppError');
 const catchAsync = require('./../utils/catchAsync');
 const makeDir = require('make-dir');
-const AuthController = require('./auth.controller');
+const fs = require("fs");
+const path = require("path");
 
 const Op = db.Sequelize.Op;
 
@@ -16,7 +17,7 @@ exports.uploadImages = catchAsync(async(req, res, next) => {
     }
     let imagesFile = req.files.file;
     let username = req.body.username;
-    let privacy = (req.body.privacy === true)? "private": "public";
+    let privacy = req.body.privacy? "private": "public";
     let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${username}`;
     makeDir(newPath).then(path => {
         let reformatedImageName = imagesFile.name.replace(/ /g, "_");
@@ -30,3 +31,30 @@ exports.uploadImages = catchAsync(async(req, res, next) => {
         });
     });
 });
+
+exports.getPublicImages = catchAsync(async(req, res, next) => {
+    const result = getAllFiles("./uploads/public");
+    res.status(200).send({images: result })
+});
+
+exports.getPrivateImages = catchAsync(async(req, res, next) => {
+    console.log(req.cookies);
+});
+
+const getAllFiles = function(dirPath, subdirs, arrayOfFiles) {
+  files = fs.readdirSync(dirPath)
+
+  arrayOfFiles = arrayOfFiles || []
+  subdirs = subdirs || "";
+
+  files.forEach(function(file) {
+    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+      subdirs = path.join(subdirs, "/", file);
+      arrayOfFiles = getAllFiles(dirPath + "/" + file, subdirs, arrayOfFiles)
+    } else {
+      arrayOfFiles.push(path.join(subdirs, "/", file))
+    }
+  })
+
+  return arrayOfFiles
+};

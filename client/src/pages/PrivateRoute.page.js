@@ -5,8 +5,7 @@ import Loading from './../components/Loading.component';
 
 
 export default function PrivateRoute(props) {   
-    const { user, isLoading } = useContext(UserContext); 
-    console.log(user, isLoading);
+    const { user, isLoading } = useContext(UserContext);
 
     const { component: Component,
         ...rest } = props;

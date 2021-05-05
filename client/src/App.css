@@ -1,7 +1,4 @@
-/* fonts */
-@import url("https://fonts.googleapis.com/css2?family=Work+Sans:wght@100;200;300;400;500;600&display=swap");
-
-/* base */
+base
 *,
 *::after,
 *::before {
@@ -63,14 +60,6 @@ code {
   background-color: #f3e8dc;
   padding: 0.5rem;
   border-radius: 0.5rem; }
-
-input {
-  font-family: 'Graphik', sans-serif;
-  font-size: 1rem;
-  letter-spacing: 0.5px; }
-  input:focus {
-    outline: none;
-    border: none; }
 
 button {
   background: none;

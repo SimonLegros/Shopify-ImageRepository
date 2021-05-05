@@ -21,30 +21,30 @@ export default function useAuth() {
     //register user  
     const registerUser = async (data) => {
         const { username, password, passwordConfirm } = data;
-            return axios.post(`auth/register`, {
-                username,
-                password,
-                passwordConfirm
-            }).then(async () => {
-                await setUserContext();
-            }).catch((err) => {
-                return setError(err.response.data);
-            })
-        };
+        return axios.post(`auth/register`, {
+            username,
+            password,
+            passwordConfirm
+        }).then(async () => {
+            await setUserContext();
+        }).catch((err) => {
+            return setError(err.response.data);
+        })
+    };
 
     //login user 
     const loginUser = async (data) => {
         const { username, password } = data;
-            return axios.post('auth/login', {
-                username,
-                password,
-            }).then(async () => {
-                await setUserContext();
-            }).catch((err) => {
-                setError(err.response.data);
-                console.log(err.response.data)
-            })
-        };
+        return axios.post('auth/login', {
+            username,
+            password,
+        }).then(async () => {
+            await setUserContext();
+        }).catch((err) => {
+            setError(err.response.data);
+            console.log(err.response.data)
+        })
+    };
 
     return {
         registerUser,
