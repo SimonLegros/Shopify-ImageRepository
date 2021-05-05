@@ -15,7 +15,7 @@ export default function useImages() {
         console.log(selectedFile);
         const data = new FormData();
         data.append("file", selectedFile);
-        data.append("privacy", privacy);
+        data.append("privacy", privacy??false);
         data.append("username", user.username );
         console.log(data);
         // return axios.post('images/upload', {

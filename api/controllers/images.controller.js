@@ -17,7 +17,7 @@ exports.uploadImages = catchAsync(async(req, res, next) => {
     }
     let imagesFile = req.files.file;
     let username = req.body.username;
-    let privacy = req.body.privacy? "private": "public";
+    let privacy = req.body.privacy === "false" ? "public": "private";
     let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${username}`;
     makeDir(newPath).then(path => {
         let reformatedImageName = imagesFile.name.replace(/ /g, "_");
@@ -42,6 +42,10 @@ exports.getPrivateImages = catchAsync(async(req, res, next) => {
 });
 
 const getAllFiles = function(dirPath, subdirs, arrayOfFiles) {
+  if(!fs.existsSync(dirPath)) {
+    return null;
+  }
+
   files = fs.readdirSync(dirPath)
 
   arrayOfFiles = arrayOfFiles || []
