@@ -5,7 +5,7 @@ export default function FormInput(props) {
 
     return(
             <input type={props.type}
-            className={`input ${fail ? "input--fail" : null} `}
+            className="w-100"
             placeholder={props.placeholder}
             name={props.name}
             value={props.value}

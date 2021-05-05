@@ -7,7 +7,7 @@ export default function useImages() {
     const [preview, setPreview ] = useState(null);
     const [privacy, setPrivacy ] = useState(null);;
     const [publicImages, setPublicImages] = useState(null);
-    const [privateImages, setPrivateImages] = useState(null);
+    const [myImages, setMyImages] = useState(null);
     const {user, setUser, isLoading} = useFindUser();
 
     // Upload images 
@@ -55,9 +55,9 @@ export default function useImages() {
         })
     };
 
-    const getPrivateImages = async() => {
+    const getMyImages = async() => {
         return await axios.get('images/private').then(res => {         
-            setPrivateImages(res.data.images);                   
+            setMyImages(res.data.images);                   
         }).catch((err) => {
             // setError(err.response.data);
         })
@@ -70,8 +70,8 @@ export default function useImages() {
         selectedFile,
         preview,
         getPublicImages,
-        getPrivateImages,
+        getMyImages,
         publicImages,
-        privateImages,
+        myImages,
     }
 }

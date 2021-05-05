@@ -24,32 +24,41 @@ export default function Login() {
         await loginUser(values);
     }
 
-    return(
-        <div className='page' style={{justifyContent:'center'}}>
-            <Header/>
-             <div className="inlineForm">
-                <h3>Login</h3>
-             <div className="inlineForm__notif">
-                 {error && <Error error={error}/>}
-             </div>
-                <form onSubmit={handleLogin}>
-                    <FormInput type={"text"} 
-                                placeholder={"Username"} 
-                                name={"username"} 
-                                value={values.username} 
-                                handleChange={handleChange} />
-                    <FormInput type={"password"} 
-                                placeholder={"Password"} 
-                                name={"password"} 
-                                value={values.password} 
-                                handleChange={handleChange} />
-                    <div className="inlineForm__submit">
-                        <Link to='/register'>
-                            <Prompt prompt={"No account? Create one."}/>
-                        </Link>
-                        <SubmitButton name={"login"} type={"submit"} /> 
+    return (
+        <div>
+            <Header />
+            <div className="d-flex justify-content-center">
+                <div className="card m-5 p-1 w-25 border-success">
+                    <div className="card-body">
+
+                        <h3 className="card-title">Login</h3>
+                        <div className="inlineForm__notif">
+                            {error && <Error error={error} />}
+                        </div>
+                        <form onSubmit={handleLogin}>
+                            <div className="form-group">
+                                <FormInput type={"text"}
+                                    placeholder={"Username"}
+                                    name={"username"}
+                                    value={values.username}
+                                    handleChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <FormInput type={"password"}
+                                    placeholder={"Password"}
+                                    name={"password"}
+                                    value={values.password}
+                                    handleChange={handleChange} />
+                            </div>
+                            <div className="form-group">
+                                <Link to='/register'>
+                                    No account? Create one
+                                </Link>
+                            </div>
+                            <SubmitButton name={"login"} type={"submit"} />
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     )

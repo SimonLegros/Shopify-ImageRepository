@@ -9,8 +9,8 @@ export default function Landing() {
     const { getPublicImages, publicImages } = useImages();
     let listImages;
 
-    if(user) {
-        <Redirect to='/home'/>
+    if (user) {
+        <Redirect to='/home' />
     }
 
     useEffect(() => {
@@ -22,25 +22,27 @@ export default function Landing() {
         getPublicImages();
     }
 
-    return(
-        <div className="page">
-            <Header/>
-           <h3>This is the public landing page</h3>
-           <div>
-                <button className="btn btn-primary" onClick={handleRefresh}>
-                    Click to Refresh
-                </button>
-                <div>
-                        {publicImages && publicImages.map((imageUrl) => (
-                            <img 
-                                src={"http://localhost:9000/"+imageUrl}
-                                alt="Public Image"
-                                className="img-thumbnail"
-                                width="400"
-                            />
-                        ))}
+    return (
+        <div>
+            <Header />
+            <div className="px-5">
+                <div className="text-center m-4">
+                    <h2>This is the public landing page</h2>
+                    <button className="btn btn-primary" onClick={handleRefresh}>
+                        Click to Refresh
+                    </button>
                 </div>
-           </div>
+                <div>
+                    {publicImages && publicImages.map((imageUrl) => (
+                        <img
+                            src={"http://localhost:9000/" + imageUrl}
+                            alt="Public Image"
+                            className="img-thumbnail"
+                            width="400"
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
     )
 }
