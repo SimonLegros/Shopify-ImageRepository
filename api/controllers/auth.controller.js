@@ -6,6 +6,7 @@ const User = db.user;
 const { promisify } = require('util');
 const AppError = require('./../utils/AppError');
 const catchAsync = require('./../utils/catchAsync');
+const { user } = require("../models");
 
 const Op = db.Sequelize.Op;
 
@@ -79,20 +80,23 @@ exports.registerUser = async(req, res, next) => {
 };
 
 exports.checkUser = catchAsync(async(req, res, next) => {
-    let currentUser;
-    if (req.cookies.jwt) {
-       const token = req.cookies.jwt;
-       const decoded = await promisify(jwt.verify)(token, config.secret);
-       currentUser = await User.findOne({
-           where: {
-               uid: decoded.id
-           }
-       });
-   } else {
-     currentUser =  null;
-  }
+    let currentUser = await this.getCurrentUser(req);
    res.status(200).send({ currentUser });
 });
+
+exports.getCurrentUser = async(req) => {
+    if (req.cookies.jwt) {
+        const token = req.cookies.jwt;
+        const decoded = await promisify(jwt.verify)(token, config.secret);
+        let user = await User.findOne({
+            where: {
+                uid: decoded.id
+            }
+        });
+        return user;
+    }
+    return null;
+};
 
 exports.logoutUser = catchAsync(async (req, res) => {
     res.cookie('jwt', 'loggedout', {
