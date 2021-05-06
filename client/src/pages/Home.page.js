@@ -1,8 +1,9 @@
-import React, { useContext, useEffect }  from 'react';
+import React, { useContext, useEffect } from 'react';
 import Header from '../components/Header.component';
 import { Redirect } from 'react-router-dom';
 import { UserContext } from '../hooks/UserContext.service';
 import useImages from '../hooks/useImages.service';
+import { Card } from 'react-bootstrap';
 
 export default function Home() {
 
@@ -22,7 +23,7 @@ export default function Home() {
         getMyImages();
     }
 
-    return(
+    return (
         <div>
             <Header />
             <div className="px-5">
@@ -32,14 +33,22 @@ export default function Home() {
                         Click to Refresh
                     </button>
                 </div>
-                <div>
-                    {myImages && myImages.map((imageUrl) => (
-                        <img
-                            src={"http://localhost:9000/" + imageUrl}
-                            alt="Public"
-                            className="img-thumbnail"
-                            width="400"
-                        />
+                <div className="d-flex justify-content-around">
+                    {myImages && myImages.map((image) => (
+                        <Card style={{width:'30rem'}} key={image.filename}>
+                            <Card.Img variant="top" src={image.data} />
+                            <Card.Body>
+                                <Card.Title>{image.filename}</Card.Title>
+                                <Card.Text>Private: {image.private}</Card.Text>
+                            </Card.Body>
+                                {/* <img
+                                    key={image.data}
+                                    src={image.data}
+                                    alt="personnal pictures"
+                                    className="img-thumbnail"
+                                    width="400"
+                                /> */}
+                        </Card>
                     ))}
                 </div>
             </div>

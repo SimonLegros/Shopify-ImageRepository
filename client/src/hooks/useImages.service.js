@@ -42,8 +42,9 @@ export default function useImages() {
     };
 
     const getMyImages = async() => {
-        return await axios.get('images/private').then(res => {         
-            setMyImages(res.data.images);                   
+        return await axios.get('images/private').then(res => {
+            setMyImages(res.data.images);
+            // setMyImages(res.data.images);                   
         }).catch((err) => {
             // setError(err.response.data);
         })

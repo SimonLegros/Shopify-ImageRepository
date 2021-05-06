@@ -6,6 +6,7 @@ const catchAsync = require('./../utils/catchAsync');
 const makeDir = require('make-dir');
 const fs = require("fs");
 const path = require("path");
+const authController = require('./auth.controller');
 
 const Op = db.Sequelize.Op;
 
@@ -16,7 +17,7 @@ exports.uploadImages = catchAsync(async (req, res, next) => {
         return res.status(500).send("No File uploaded");
     }
     let imagesFiles = req.files['files[]'];
-    if(!Array.isArray(imagesFiles)) {
+    if (!Array.isArray(imagesFiles)) {
         imagesFiles = [imagesFiles];
     }
     let username = req.body.username;
@@ -33,8 +34,8 @@ exports.uploadImages = catchAsync(async (req, res, next) => {
                 }
             });
         });
-        if(error) return res.status(500).send(error);
-        else res.status(200).json({message: "Image(s) uploaded succesfully!"});
+        if (error) return res.status(500).send(error);
+        else res.status(200).json({ message: "Image(s) uploaded succesfully!" });
     });
 });
 
@@ -43,8 +44,49 @@ exports.getPublicImages = catchAsync(async (req, res, next) => {
     res.status(200).send({ images: result })
 });
 
-exports.getPrivateImages = catchAsync(async (req, res, next) => {
-    console.log(req.cookies);
+exports.getAllMyImages = catchAsync(async (req, res, next) => {
+    let user = await authController.getCurrentUser(req);
+    if (!user) {
+        return res.status(401).send("Unauthorized");
+    }
+
+    const publicPath = `./uploads/public/${user.username}`;
+    const privatePath = `./uploads/private/${user.username}`;
+    const publicImages = getAllFiles(publicPath);
+    const privateImages = getAllFiles(privatePath);
+
+    let files = [];
+    if(publicImages){
+        publicImages.forEach(imagePath => {
+            console.log(imagePath);
+            const data = fs.readFileSync(`${publicPath}${imagePath}`, { encoding: 'base64' });
+            files.push({
+                filename: imagePath,
+                private: "False",
+                data: `data:image/png;base64,${data}`
+            });
+        });
+    }
+    if(privateImages) {
+        privateImages.forEach(imagePath => {
+            console.log(imagePath);
+            const data = fs.readFileSync(`${privatePath}${imagePath}`, { encoding: 'base64' });
+            files.push({
+                filename: imagePath,
+                private: "True",
+                data: `data:image/png;base64,${data}`
+            });
+        });
+    }
+
+    // const data = fs.readFileSync("./uploads/public/bo/dashboard_part1.png", { encoding: 'base64' })
+    // let files = [{
+    //     name: "dashboard_part1.png",
+    //     private: false,
+    //     data: `data:image/png;base64,${data}`,
+    // },
+    // ]
+    return res.json({ images: files });
 });
 
 const getAllFiles = function (dirPath, subdirs, arrayOfFiles) {

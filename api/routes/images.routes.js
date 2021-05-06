@@ -3,7 +3,7 @@ const controller = require("../controllers/images.controller");
 
 router.get('/', controller.getPublicImages);
 
-router.get('/private', controller.getPrivateImages);
+router.get('/private', controller.getAllMyImages);
 
 router.post('/upload', controller.uploadImages);
 
