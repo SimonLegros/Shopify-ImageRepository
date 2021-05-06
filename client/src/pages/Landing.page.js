@@ -7,7 +7,6 @@ import useImages from '../hooks/useImages.service';
 export default function Landing() {
     const { user } = useContext(UserContext);
     const { getPublicImages, publicImages } = useImages();
-    let listImages;
 
     if (user) {
         <Redirect to='/home' />
@@ -34,9 +33,9 @@ export default function Landing() {
                 </div>
                 <div>
                     {publicImages && publicImages.map((imageUrl) => (
-                        <img
+                        <img key={imageUrl}
                             src={"http://localhost:9000/" + imageUrl}
-                            alt="Public Image"
+                            alt="Mine"
                             className="img-thumbnail"
                             width="400"
                         />

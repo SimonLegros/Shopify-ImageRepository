@@ -8,7 +8,6 @@ export default function Home() {
 
     const { user } = useContext(UserContext);
     const { getMyImages, myImages } = useImages();
-    let listImages;
 
     if (!user) {
         <Redirect to='/login' />
@@ -37,7 +36,7 @@ export default function Home() {
                     {myImages && myImages.map((imageUrl) => (
                         <img
                             src={"http://localhost:9000/" + imageUrl}
-                            alt="Public Image"
+                            alt="Public"
                             className="img-thumbnail"
                             width="400"
                         />

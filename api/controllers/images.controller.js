@@ -16,21 +16,25 @@ exports.uploadImages = catchAsync(async (req, res, next) => {
         return res.status(500).send("No File uploaded");
     }
     let imagesFiles = req.files['files[]'];
+    if(!Array.isArray(imagesFiles)) {
+        imagesFiles = [imagesFiles];
+    }
     let username = req.body.username;
     let privacy = req.body.privacy === "false" ? "public" : "private";
     let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${username}`;
+    let error = null;
     makeDir(newPath).then(path => {
         imagesFiles.forEach((file) => {
             let reformatedImageName = file.name.replace(/ /g, "_");
             file.mv(`${newPath}/${reformatedImageName}`, (err) => {
                 if (err) {
                     console.log(err);
-                    return res.status(500).send(err);
+                    error = err;
                 }
-                // res.status(200).json({file: imagesFile});
-                res.status(200).sendFile(`${newPath}/${reformatedImageName}`, { root: '.' });
             });
         });
+        if(error) return res.status(500).send(error);
+        else res.status(200).json({message: "Image(s) uploaded succesfully!"});
     });
 });
 

@@ -3,30 +3,23 @@ import axios from 'axios';
 import useFindUser from './useFindUser.service';
 
 export default function useImages() {
-    const [selectedFile, setFile] = useState(null);
-    const [privacy, setPrivacy ] = useState(null);;
     const [publicImages, setPublicImages] = useState(null);
     const [myImages, setMyImages] = useState(null);
-    const {user, setUser, isLoading} = useFindUser();
+    const {user} = useFindUser();
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     // Upload images 
     const uploadImages = async (acceptedFiles) => {
-        // acceptedFiles.forEach((file, key, map) => {
-        //     console.log(file);
-        //     const data = new FormData();
-        //     data.append("file", file);
-        //     data.append("privacy", privacy??false);
-        //     data.append("username", user.username );
-        //     console.log(data);
-        //     fetch("http://localhost:9000/images/upload", {
-        //         method: "POST",
-        //         body: data,
-        //     })
-        //     .then( response => console.log(response))
-        //     .catch( err => console.error(err));
-        // });
+        if(acceptedFiles.size <= 0){
+            setError(Error('Need at least 1 file to upload!'));
+            return;
+        }
+        setError(null);
+        setSuccess(null);
         const data = new FormData();
-        data.append("privacy", privacy??false);
+        let isPrivate = document.getElementById('isPrivate').checked;
+        data.append("privacy", isPrivate);
         data.append("username", user.username );
         acceptedFiles.forEach((fileWithMeta, key, map) => {
             data.append("files[]", fileWithMeta.file, fileWithMeta.file.name);
@@ -35,25 +28,14 @@ export default function useImages() {
             method: "POST",
             body: data,
         })
-        .then( response => {
-            console.log(response);
-            setFile(response);
-        })
-        .catch( err => console.error(err));
-    };
-
-    const handleFileChange = event => {
-        setFile(event.target.files[0])
-    };
-
-    const handlePrivacyChange = e => {
-        setPrivacy(e.target.checked);
+        .then( res => res.json())
+        .then( data => setSuccess(data.message))
+        .catch( err => setError(err));
     };
 
     const getPublicImages = async() => {
         return await axios.get('images').then(res => {         
-            setPublicImages(res.data.images); 
-            console.log(res.data.images);                  
+            setPublicImages(res.data.images);                   
         }).catch((err) => {
             // setError(err.response.data);
         })
@@ -68,13 +50,12 @@ export default function useImages() {
     };
 
     return {
-        handleFileChange,
-        handlePrivacyChange,
         uploadImages,
-        selectedFile,
         getPublicImages,
         getMyImages,
         publicImages,
         myImages,
+        error,
+        success,
     }
 }

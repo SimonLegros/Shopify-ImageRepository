@@ -1,8 +1,6 @@
 import React from 'react'; 
 
 export default function FormInput(props) {
-    let fail = props.fail; 
-
     return(
             <input type={props.type}
             className="w-100"

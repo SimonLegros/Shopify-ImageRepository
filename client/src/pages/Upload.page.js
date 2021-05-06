@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
-import Error from './../components/Error.component';
+import React from 'react';
 import Header from '../components/Header.component';
-import FormInput from '../components/FormInput.component';
-import SubmitButton from './../components/SubmitButton.component';
-import useForm from './../hooks/useForm.service';
 import useImages from '../hooks/useImages.service';
 import 'react-dropzone-uploader/dist/styles.css'
 import Dropzone from 'react-dropzone-uploader'
+import Error from './../components/Error.component';
+import Success from './../components/Success.component';
 
 export default function Upload() {
 
-    const { handlePrivacyChange, uploadImages } = useImages();
+    const { uploadImages, error, success } = useImages();
 
     let acceptedFiles = new Map();
 
@@ -19,7 +17,8 @@ export default function Upload() {
         uploadImages(acceptedFiles);
         acceptedFiles.forEach((fileWithMeta, key, map) => {
             fileWithMeta.remove();
-        })
+        });
+        acceptedFiles.clear();
     }
 
     const MyUploader = () => {
@@ -50,7 +49,6 @@ export default function Upload() {
                     previewImage: {height:'200px', maxHeight: '200px', maxWidth: '100%'},
                     inputLabel: (file, extra) => (extra.reject ? {color:'red'}:{color: 'green'}),
                 }}
-                // onSubmit={handleSubmit}
             />
         )
     }
@@ -63,19 +61,19 @@ export default function Upload() {
                     <h2>Here you can upload your own images</h2>
                 </div>
                 <form onSubmit={handleUpload} encType="multipart/form-data">
+                    {error && <Error error={error} />}
+                    {success && <Success />}
                     <div className="form-group">
                         <MyUploader />
                     </div>
                     <div className="form-group form-check">
-                        <input id="privacy"
+                        <input id="isPrivate"
                             type="checkbox"
                             className="form-check-input"
-                            name="privacy"
-                            onChange={handlePrivacyChange} />
+                            name="privacy"/>
                         <label className="form-check-label">Private</label>
                     </div>
                     <button type="submit" className="btn btn-success">Upload</button>
-                    {/* <SubmitButton name={"Upload"} type={"submit"}/> */}
                 </form>
             </div>
         </div>

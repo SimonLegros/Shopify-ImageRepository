@@ -42,7 +42,7 @@ export default function useAuth() {
             await setUserContext();
         }).catch((err) => {
             setError(err.response.data);
-            console.log(err.response.data)
+            console.error(err.response.data)
         })
     };
 

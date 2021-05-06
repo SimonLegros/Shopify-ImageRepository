@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import InlineButton from './InlineButton';
 import { UserContext } from '../hooks/UserContext.service';
 import useLogout from '../hooks/useLogout.service';
 import { Navbar, Nav } from "react-bootstrap";
@@ -15,6 +14,7 @@ export default function Header() {
                 <img
                     className="d-inline-block align-top"
                     src="shopify_glyph.png"
+                    alt="icon"
                     width="40" height="40"
                 />{' '}
                 Shopify Challenge - Image Repository

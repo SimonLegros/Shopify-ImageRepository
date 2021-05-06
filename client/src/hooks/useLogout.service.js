@@ -10,7 +10,6 @@ export default function useLogout() {
                 method: 'GET',
                 url: `auth/logout`,
             }).then(res => { 
-                console.log(res); 
                 history.push('/');
                 window.location.reload();
             })
