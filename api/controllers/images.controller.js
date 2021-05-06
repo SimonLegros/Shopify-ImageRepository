@@ -58,7 +58,6 @@ exports.getAllMyImages = catchAsync(async (req, res, next) => {
     let files = [];
     if(publicImages){
         publicImages.forEach(imagePath => {
-            console.log(imagePath);
             const data = fs.readFileSync(`${publicPath}${imagePath}`, { encoding: 'base64' });
             files.push({
                 filename: imagePath,
@@ -69,7 +68,6 @@ exports.getAllMyImages = catchAsync(async (req, res, next) => {
     }
     if(privateImages) {
         privateImages.forEach(imagePath => {
-            console.log(imagePath);
             const data = fs.readFileSync(`${privatePath}${imagePath}`, { encoding: 'base64' });
             files.push({
                 filename: imagePath,
@@ -78,14 +76,6 @@ exports.getAllMyImages = catchAsync(async (req, res, next) => {
             });
         });
     }
-
-    // const data = fs.readFileSync("./uploads/public/bo/dashboard_part1.png", { encoding: 'base64' })
-    // let files = [{
-    //     name: "dashboard_part1.png",
-    //     private: false,
-    //     data: `data:image/png;base64,${data}`,
-    // },
-    // ]
     return res.json({ images: files });
 });
 

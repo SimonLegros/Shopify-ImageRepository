@@ -1,4 +1,6 @@
 let initDB = () => {
+    const config = require("./config/auth.config");
+    const bcrypt = require('bcryptjs');
     const db = require("./models");
     const Role = db.role;
     const User = db.user;
@@ -9,14 +11,10 @@ let initDB = () => {
     });
 
     function initData() {
-        Role.create({
-            id: 1,
-            name: "user"
-        });
         User.create({
             uid: 1,
-            username: "shopify",
-            password: "$2y$10$lAXngkaTJBQvdRDw7ZNTIOZLEhU4BqsgzmhpyxYUYI.NqPuj5TJ6e"
+            username: config.defaultUser.username,
+            password: bcrypt.hashSync(config.defaultUser.password, bcrypt.genSaltSync(10))
         });
     }
 
