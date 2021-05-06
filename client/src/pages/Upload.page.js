@@ -5,53 +5,78 @@ import FormInput from '../components/FormInput.component';
 import SubmitButton from './../components/SubmitButton.component';
 import useForm from './../hooks/useForm.service';
 import useImages from '../hooks/useImages.service';
+import 'react-dropzone-uploader/dist/styles.css'
+import Dropzone from 'react-dropzone-uploader'
 
 export default function Upload() {
 
-    const { handleFileChange, handlePrivacyChange, uploadImages, selectedFile, preview } = useImages();
+    const { handlePrivacyChange, uploadImages } = useImages();
 
-    // const handleUpload = async (e) => {
-    //     e.preventDefault();
-    //     await uploadImages();
-    // }
+    let acceptedFiles = new Map();
+
     const handleUpload = (e) => {
         e.preventDefault();
-        uploadImages();
+        uploadImages(acceptedFiles);
+        acceptedFiles.forEach((fileWithMeta, key, map) => {
+            fileWithMeta.remove();
+        })
+    }
+
+    const MyUploader = () => {
+
+        // called every time a file's `status` changes
+        const handleChangeStatus = (fileWithMeta, status) => {
+            if(status === 'done') {
+                acceptedFiles.set(fileWithMeta.meta.id, fileWithMeta);
+            }
+            if(status === "removed") {
+                acceptedFiles.delete(fileWithMeta.meta.id);
+            }
+        }
+
+        const config = {
+            maxfiles: 5,
+            accepted: "image/*",
+        }
+        return (
+            <Dropzone
+                onChangeStatus={handleChangeStatus}
+                maxFiles={config.maxfiles}
+                accept={config.accepted}
+                inputContent={(files,extra) => (extra.reject ? "Image only" : `Drop your images here (Max ${config.maxfiles})`)}
+                styles={{
+                    dropzone: {borderColor: 'green'},
+                    dropzoneReject: {borderColor: 'red', backgroundColor: '#DAA' },
+                    previewImage: {height:'200px', maxHeight: '200px', maxWidth: '100%'},
+                    inputLabel: (file, extra) => (extra.reject ? {color:'red'}:{color: 'green'}),
+                }}
+                // onSubmit={handleSubmit}
+            />
+        )
     }
 
     return (
         <div>
             <Header />
-            <div className="px-5">
+            <div className="container px-5">
                 <div className="text-center m-4">
                     <h2>Here you can upload your own images</h2>
                 </div>
-                <div className="d-flex justify-content-center">
-                    <div className="card m-5 p-1 w-50 border-success">
-                        <div className="card-body">
-                            <form onSubmit={handleUpload} encType="multipart/form-data">
-                                <div className="form-group">
-                                    <div className="custom-file">
-                                        <input type="file" className="custom-file-input" name="file" id="customFile" onChange={handleFileChange} />
-                                        <label className="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-                                </div>
-                                <div className="form-group form-check">
-                                    <input id="privacy"
-                                        type="checkbox"
-                                        className="form-check-input"
-                                        name="privacy"
-                                        onChange={handlePrivacyChange} />
-                                    <label for="privacy" className="form-check-label">Private</label>
-                                </div>
-                                <SubmitButton name={"Upload"} type={"submit"}/>
-                            </form>
-                        </div>
-                        <div className="d-flex justify-content-center m-5">
-                            <img src={preview} className="img-fluid w-100" alt="Image Preview" />
-                        </div>
+                <form onSubmit={handleUpload} encType="multipart/form-data">
+                    <div className="form-group">
+                        <MyUploader />
                     </div>
-                </div>
+                    <div className="form-group form-check">
+                        <input id="privacy"
+                            type="checkbox"
+                            className="form-check-input"
+                            name="privacy"
+                            onChange={handlePrivacyChange} />
+                        <label className="form-check-label">Private</label>
+                    </div>
+                    <button type="submit" className="btn btn-success">Upload</button>
+                    {/* <SubmitButton name={"Upload"} type={"submit"}/> */}
+                </form>
             </div>
         </div>
     )

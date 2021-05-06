@@ -11,54 +11,56 @@ const Op = db.Sequelize.Op;
 
 const UPLOAD_BASE_PATH = "./uploads";
 
-exports.uploadImages = catchAsync(async(req, res, next) => {
-    if(!req.files){
+exports.uploadImages = catchAsync(async (req, res, next) => {
+    if (!req.files) {
         return res.status(500).send("No File uploaded");
     }
-    let imagesFile = req.files.file;
+    let imagesFiles = req.files['files[]'];
     let username = req.body.username;
-    let privacy = req.body.privacy === "false" ? "public": "private";
+    let privacy = req.body.privacy === "false" ? "public" : "private";
     let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${username}`;
     makeDir(newPath).then(path => {
-        let reformatedImageName = imagesFile.name.replace(/ /g, "_");
-        imagesFile.mv(`${newPath}/${reformatedImageName}`, (err) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).send(err);
-            }
-            // res.status(200).json({file: imagesFile});
-            res.status(200).sendFile(`${newPath}/${reformatedImageName}`, {root: '.'});
+        imagesFiles.forEach((file) => {
+            let reformatedImageName = file.name.replace(/ /g, "_");
+            file.mv(`${newPath}/${reformatedImageName}`, (err) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).send(err);
+                }
+                // res.status(200).json({file: imagesFile});
+                res.status(200).sendFile(`${newPath}/${reformatedImageName}`, { root: '.' });
+            });
         });
     });
 });
 
-exports.getPublicImages = catchAsync(async(req, res, next) => {
+exports.getPublicImages = catchAsync(async (req, res, next) => {
     const result = getAllFiles("./uploads/public");
-    res.status(200).send({images: result })
+    res.status(200).send({ images: result })
 });
 
-exports.getPrivateImages = catchAsync(async(req, res, next) => {
+exports.getPrivateImages = catchAsync(async (req, res, next) => {
     console.log(req.cookies);
 });
 
-const getAllFiles = function(dirPath, subdirs, arrayOfFiles) {
-  if(!fs.existsSync(dirPath)) {
-    return null;
-  }
-
-  files = fs.readdirSync(dirPath)
-
-  arrayOfFiles = arrayOfFiles || []
-  subdirs = subdirs || "";
-
-  files.forEach(function(file) {
-    if (fs.statSync(dirPath + "/" + file).isDirectory()) {
-      subdirs = path.join(subdirs, "/", file);
-      arrayOfFiles = getAllFiles(dirPath + "/" + file, subdirs, arrayOfFiles)
-    } else {
-      arrayOfFiles.push(path.join(subdirs, "/", file))
+const getAllFiles = function (dirPath, subdirs, arrayOfFiles) {
+    if (!fs.existsSync(dirPath)) {
+        return null;
     }
-  })
 
-  return arrayOfFiles
+    files = fs.readdirSync(dirPath)
+
+    arrayOfFiles = arrayOfFiles || []
+    subdirs = subdirs || "";
+
+    files.forEach(function (file) {
+        if (fs.statSync(dirPath + "/" + file).isDirectory()) {
+            subdirs = path.join(subdirs, "/", file);
+            arrayOfFiles = getAllFiles(dirPath + "/" + file, subdirs, arrayOfFiles)
+        } else {
+            arrayOfFiles.push(path.join(subdirs, "/", file))
+        }
+    })
+
+    return arrayOfFiles
 };

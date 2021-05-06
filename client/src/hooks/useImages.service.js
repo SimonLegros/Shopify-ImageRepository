@@ -4,38 +4,42 @@ import useFindUser from './useFindUser.service';
 
 export default function useImages() {
     const [selectedFile, setFile] = useState(null);
-    const [preview, setPreview ] = useState(null);
     const [privacy, setPrivacy ] = useState(null);;
     const [publicImages, setPublicImages] = useState(null);
     const [myImages, setMyImages] = useState(null);
     const {user, setUser, isLoading} = useFindUser();
 
     // Upload images 
-    const uploadImages = async () => {
-        console.log(selectedFile);
+    const uploadImages = async (acceptedFiles) => {
+        // acceptedFiles.forEach((file, key, map) => {
+        //     console.log(file);
+        //     const data = new FormData();
+        //     data.append("file", file);
+        //     data.append("privacy", privacy??false);
+        //     data.append("username", user.username );
+        //     console.log(data);
+        //     fetch("http://localhost:9000/images/upload", {
+        //         method: "POST",
+        //         body: data,
+        //     })
+        //     .then( response => console.log(response))
+        //     .catch( err => console.error(err));
+        // });
         const data = new FormData();
-        data.append("file", selectedFile);
         data.append("privacy", privacy??false);
         data.append("username", user.username );
-        console.log(data);
-        // return axios.post('images/upload', {
-        //     formData
-        // }).then(async (res) => {
-        //     console.log(res);
-        // }).catch((err) => {
-        //     // setError(err.response.data);
-        //     console.log(err.response.data)
-        // })
+        acceptedFiles.forEach((fileWithMeta, key, map) => {
+            data.append("files[]", fileWithMeta.file, fileWithMeta.file.name);
+        });
         fetch("http://localhost:9000/images/upload", {
             method: "POST",
             body: data,
         })
-        .then( response => response.blob())
-        .then( images => {
-            let url = URL.createObjectURL(images);
-            console.log(url);
-            setPreview(url);
-        });
+        .then( response => {
+            console.log(response);
+            setFile(response);
+        })
+        .catch( err => console.error(err));
     };
 
     const handleFileChange = event => {
@@ -68,7 +72,6 @@ export default function useImages() {
         handlePrivacyChange,
         uploadImages,
         selectedFile,
-        preview,
         getPublicImages,
         getMyImages,
         publicImages,
