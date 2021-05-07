@@ -33,9 +33,14 @@ export default function Home() {
                         Click to Refresh
                     </button>
                 </div>
-                <div className="d-flex justify-content-around">
+                <div className="d-flex justify-content-around flex-wrap">
                     {myImages && myImages.map((image) => (
-                        <Card style={{width:'30rem'}} key={image.filename}>
+                        <Card 
+                            style={{width:'25rem', margin:'1rem'}} 
+                            bg="dark"
+                            text="light"
+                            border="success"
+                            key={image.filename}>
                             <Card.Img variant="top" src={image.data} />
                             <Card.Body>
                                 <Card.Title>{image.filename}</Card.Title>
