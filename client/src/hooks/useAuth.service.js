@@ -10,7 +10,7 @@ export default function useAuth() {
 
     //set user
     const setUserContext = async () => {
-        return await axios.get('auth/user').then(res => {         
+        return await axios.get('auth/user').then(res => {       
             setUser(res.data.currentUser);  
             history.push('/home');                     
             }).catch((err) => {
@@ -25,24 +25,28 @@ export default function useAuth() {
             username,
             password,
             passwordConfirm
-        }).then(async () => {
+        }).then(async (res) => {
+            localStorage.setItem('token', res.data.token);
             await setUserContext();
         }).catch((err) => {
             return setError(err.response.data);
         })
     };
-
+    
     //login user 
     const loginUser = async (data) => {
         const { username, password } = data;
         return axios.post('auth/login', {
             username,
             password,
-        }).then(async () => {
-            await setUserContext();
-        }).catch((err) => {
+        })
+        .then(async (res) =>{
+            localStorage.setItem('token', res.data.token);
+            await setUserContext() 
+        })
+        .catch((err) => {
             setError(err.response.data);
-            console.error(err.response.data)
+            // console.error(err.response.data)
         })
     };
 

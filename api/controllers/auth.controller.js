@@ -57,7 +57,6 @@ exports.loginUser = catchAsync(async(req, res, next) => {
 });
 
 validatePassword = (user, password) => {
-    console.log(user, password);
     return bcrypt.compareSync(
         password,
         user.password
@@ -80,16 +79,18 @@ exports.registerUser = async(req, res, next) => {
 };
 
 exports.checkUser = catchAsync(async(req, res, next) => {
-    let currentUser = await this.getCurrentUser(req);
+    if(!req.cookies || !req.cookies.jwt){
+        return res.status(401).send("Unauthorized");
+    }
+    let currentUser = await this.getCurrentUser(req.cookies.jwt);
     if(currentUser == null){
         return res.status(401).send("Unauthorized");
     }
    return res.status(200).send({ currentUser });
 });
 
-exports.getCurrentUser = async(req) => {
-    if (req.cookies.jwt) {
-        const token = req.cookies.jwt;
+exports.getCurrentUser = async(token) => {
+    if (token) {
         const decoded = await promisify(jwt.verify)(token, config.secret);
         let user = await User.findOne({
             where: {

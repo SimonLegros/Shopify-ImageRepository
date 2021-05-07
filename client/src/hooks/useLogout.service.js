@@ -10,6 +10,7 @@ export default function useLogout() {
                 method: 'GET',
                 url: `auth/logout`,
             }).then(res => { 
+                localStorage.removeItem('token');
                 history.push('/');
                 window.location.reload();
             })

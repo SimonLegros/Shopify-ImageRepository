@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import axios from 'axios';
-import useFindUser from './useFindUser.service';
+import useAuth from './useAuth.service';
 
 export default function useImages() {
     const [publicImages, setPublicImages] = useState(null);
     const [myImages, setMyImages] = useState(null);
-    const {user} = useFindUser();
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
@@ -20,13 +19,14 @@ export default function useImages() {
         const data = new FormData();
         let isPrivate = document.getElementById('isPrivate').checked;
         data.append("privacy", isPrivate);
-        data.append("username", user.username );
+        data.append("token", localStorage.getItem('token') );
         acceptedFiles.forEach((fileWithMeta, key, map) => {
             data.append("files[]", fileWithMeta.file, fileWithMeta.file.name);
         });
+
         fetch("http://localhost:9000/images/upload", {
             method: "POST",
-            body: data,
+            body: data
         })
         .then( res => res.json())
         .then( data => setSuccess(data.message))

@@ -1,5 +1,4 @@
 const db = require("../models");
-const User = db.user;
 const { promisify } = require('util');
 const AppError = require('./../utils/AppError');
 const catchAsync = require('./../utils/catchAsync');
@@ -16,13 +15,20 @@ exports.uploadImages = catchAsync(async (req, res, next) => {
     if (!req.files) {
         return res.status(500).send("No File uploaded");
     }
+    if(req.body.token == null) {
+        return res.status(401).send("Unauthorized");
+    }
+    const user = await authController.getCurrentUser(req.body.token);
+    if(!user){
+        return res.status(401).send("Unauthorized");
+    }
+
     let imagesFiles = req.files['files[]'];
     if (!Array.isArray(imagesFiles)) {
         imagesFiles = [imagesFiles];
     }
-    let username = req.body.username;
     let privacy = req.body.privacy === "false" ? "public" : "private";
-    let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${username}`;
+    let newPath = `${UPLOAD_BASE_PATH}/${privacy}/${user.username}`;
     let error = null;
     makeDir(newPath).then(path => {
         imagesFiles.forEach((file) => {
@@ -45,7 +51,10 @@ exports.getPublicImages = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllMyImages = catchAsync(async (req, res, next) => {
-    let user = await authController.getCurrentUser(req);
+    if(!req.cookies || !req.cookies.jwt){
+        return res.status(401).send("Unauthorized");
+    }
+    let user = await authController.getCurrentUser(req.cookies.jwt);
     if (!user) {
         return res.status(401).send("Unauthorized");
     }
