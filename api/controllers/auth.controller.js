@@ -6,7 +6,6 @@ const User = db.user;
 const { promisify } = require('util');
 const AppError = require('./../utils/AppError');
 const catchAsync = require('./../utils/catchAsync');
-const { user } = require("../models");
 
 const Op = db.Sequelize.Op;
 
@@ -58,6 +57,7 @@ exports.loginUser = catchAsync(async(req, res, next) => {
 });
 
 validatePassword = (user, password) => {
+    console.log(user, password);
     return bcrypt.compareSync(
         password,
         user.password
@@ -81,7 +81,10 @@ exports.registerUser = async(req, res, next) => {
 
 exports.checkUser = catchAsync(async(req, res, next) => {
     let currentUser = await this.getCurrentUser(req);
-   res.status(200).send({ currentUser });
+    if(currentUser == null){
+        return res.status(401).send("Unauthorized");
+    }
+   return res.status(200).send({ currentUser });
 });
 
 exports.getCurrentUser = async(req) => {
