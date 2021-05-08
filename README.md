@@ -33,17 +33,14 @@ This application is not meant for production use. It has only been made for the 
 
 ## Usage :gear:
 
-### To Clone & Install the application
+### To Clone and Run the application
 
 ```bash
+# Clone the repo
 git clone https://github.com/SimonLegros/Shopify-ImageRepository
+# Move in the repo
 cd Shopify-ImageRepository
-npm run install
-```
 
-### To Run the application
-
-```bash
 # This is build and run both Client and API containers in background
 npm run start
 
