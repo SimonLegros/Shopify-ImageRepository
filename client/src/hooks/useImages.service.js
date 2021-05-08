@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import axios from 'axios';
-import useAuth from './useAuth.service';
 
 export default function useImages() {
     const [publicImages, setPublicImages] = useState(null);

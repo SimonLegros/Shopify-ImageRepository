@@ -17,7 +17,7 @@ Made with **React**, **Express**, **Sequelize** and **SQLite3**, for a light and
 
 ------
 
-## Requirements :bookmark:
+## Requirements :loudspeaker:
 
 This project uses **Docker** and **Docker-Compose**. Make sure to install both before trying to install this application. For more information about these tools or on how to install them, please visit their website at https://www.docker.com/ and https://docs.docker.com/compose/install/.
 
@@ -31,7 +31,7 @@ This application is not meant for production use. It has only been made for the 
 
 ------
 
-## Usage :loudspeaker:
+## Usage :gear:
 
 ### To Clone & Install the application
 
@@ -51,9 +51,15 @@ npm run start
 npm run dev
 ```
 
+There you go! Now you can navigate to http://localhost:3000 and there you have your application! Have fun!
+
+The default credentials to log in are **admin** / **admin** (username / password). But feel free to create a new user!
+
 ### To Run Tests
 
 ```bash
+# Build the API container and run the tests
 npm test
 ```
 
+**Note :** There is currently solely tests for the API endpoints. There is no tests on the client side.

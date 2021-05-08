@@ -3,7 +3,6 @@ import Header from '../components/Header.component';
 import { Redirect } from 'react-router-dom';
 import { UserContext } from '../hooks/UserContext.service';
 import useImages from '../hooks/useImages.service';
-import useAuth from '../hooks/useAuth.service';
 import { Card } from 'react-bootstrap';
 
 export default function Home() {
