@@ -1,5 +1,5 @@
 # Light node image from github.com/mhart/alpine-node
-FROM node:12.19
+FROM node:14.16-alpine
 
 RUN mkdir -p /home/node/api/node_modules && chown -R node:node /home/node/api
 
@@ -15,4 +15,4 @@ COPY --chown=node:node . .
 
 EXPOSE 9000
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]

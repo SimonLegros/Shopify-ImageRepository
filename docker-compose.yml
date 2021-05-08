@@ -12,6 +12,7 @@ services:
             - /api/node_modules
         networks: 
             - shopifychallenge-network
+        command: npm start
 
     client:
         build: 
@@ -27,6 +28,7 @@ services:
             - api
         networks:
             - shopifychallenge-network
+        command: npm start
 
 networks: 
     shopifychallenge-network:

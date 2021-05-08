@@ -1,0 +1,12 @@
+version: "3"
+services: 
+    api:
+        build:
+            context: ./api
+            dockerfile: ./Dockerfile
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./api:/api
+            - /api/node_modules
+        command: npm test
